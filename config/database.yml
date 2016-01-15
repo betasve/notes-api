@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: sly
+  password: asd123
+  host: localhost
+
+development:
+  <<: *default
+  database: notes-api_development
+
+test:
+  <<: *default
+  database: notes-api_test
