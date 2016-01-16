@@ -1,4 +1,4 @@
-class NotesSerializer
+class TagsSerializer
   include Rails.application.routes.url_helpers
 
   def initialize(resources)
@@ -19,18 +19,18 @@ class NotesSerializer
 
   private
 
-  def serialize_many(resources)
+  def serialize_one(resource)
     result = {}
-    result[:links] = { self: api_v1_notes_url }
-    result[:data] = add_records
+    result[:links] = { self: api_v1_tag_url(resource) }
+    result[:data] = add_single_record
+    result[:relationships] = get_related_notes(resource)
     result
   end
 
-  def serialize_one(resource)
+  def serialize_many(resources)
     result = {}
-    result[:links] = { self: api_v1_note_url(resource) }
-    result[:data] = add_single_record
-    result[:relationships] = get_related_tags(resource)
+    result[:links] = { self: api_v1_tags_url }
+    result[:data] = add_records
     result
   end
 
@@ -51,17 +51,17 @@ class NotesSerializer
     {
       type: record.class.name.downcase.pluralize,
       id:    res_hash.delete("id"),
-      attributes: res_hash
+      attributes: res_hash.symbolize_keys
     }
   end
 
-  def get_related_tags(note)
+  def get_related_notes(tag)
     {
-      tags: {
+      notes: {
         links: {
-          related: api_v1_note_tags_url(note)
+          related: api_v1_tags_url
         },
-        data: TagsSerializer.new(note.tags).to_collection
+        data: NotesSerializer.new(tag.notes).to_collection
       }
     }
   end

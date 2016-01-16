@@ -16,7 +16,10 @@ module Api::V1
 
     def create
       note = Note.new(permitted_params)
+      tags = Tag.get_collection(permitted_tags_params)
+
       if note.save
+        note.tags = tags
         render json: NotesSerializer.new(note).to_json, status: :created
       else
         render json: note.errors.to_json, status: :bad_request
@@ -25,7 +28,10 @@ module Api::V1
 
     def update
       note = Note.find(params[:id])
+      tags = Tag.get_collection(permitted_tags_params)
+
       if note.update_attributes(permitted_params)
+        note.tags = tags
         render json: NotesSerializer.new(note).to_json, head: :ok
       else
         render json: note.errors.to_json, head: :bad_request
@@ -45,6 +51,10 @@ module Api::V1
 
     def permitted_params
       params.require(:data).require(:attributes).permit(:title, :body)
+    end
+
+    def permitted_tags_params
+      params.require(:relationships).require(:tags).require(:data)
     end
 
     def ensure_request_type

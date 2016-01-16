@@ -36,6 +36,10 @@ RSpec.describe Api::V1::NotesController do
       end
 
       it_behaves_like "JSON endpoint", 201
+
+      it "creates tags for the note" do
+        expect(Tag.all).to eq(@note.tags)
+      end
     end
 
     describe "PUT update" do
@@ -43,10 +47,15 @@ RSpec.describe Api::V1::NotesController do
         @note = Fabricate(:note)
         @note.title = "Updated title"
         @note.body = "Updated body"
+        @note.tags.push(Fabricate(:tag))
         put :update, update_request(@note)
       end
 
       it_behaves_like "JSON endpoint", 200
+
+      it "adds new tag after update" do
+        expect(Tag.all).to eq(@note.tags)
+      end
     end
 
     describe "DELETE destroy" do

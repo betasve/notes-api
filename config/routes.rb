@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :notes, except: [:new, :edit] do
-        resources :tags, except: [:new, :edit]
+        resources :tags, only: [:index, :show]
       end
+
+      resources :tags, only: [:index, :show]
     end
   end
 end

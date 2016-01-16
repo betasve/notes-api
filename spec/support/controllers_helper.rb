@@ -8,6 +8,11 @@ module ControllerHelpers
   end
 
   def update_request(note)
-    { :id => note.id, :data => NotesSerializer.new(note).to_json.fetch(:data) }
+    note_hash = NotesSerializer.new(note).to_json
+    {
+      :id => note.id,
+      :data => note_hash.fetch(:data),
+      :relationships => note_hash.fetch(:relationships)
+    }
   end
 end
