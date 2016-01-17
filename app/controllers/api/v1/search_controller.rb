@@ -5,18 +5,16 @@ module Api::V1
       if params[:q]
         results = PgSearch.multisearch(params[:q])
         response = {}
-        response[:links] = { self: api_v1_search_url }
         response[:data] = []
         results.each do |result|
           if result.searchable_type == "Note"
-            response[:data] << NotesSerializer.new(Note.find(result.searchable_id)).to_json
+            response[:data] << NotesSerializer.new(Note.find(result.searchable_id)).to_json[:data]
           elsif result.searchable_type == "Tag"
-            response[:data] << TagsSerializer.new(Tag.find(result.searchable_id)).to_json
+            response[:data] << TagsSerializer.new(Tag.find(result.searchable_id)).to_json[:data]
           end
         end
         render json: response
       end
     end
-
   end
 end

@@ -58,7 +58,7 @@ module Api::V1
     end
 
     def ensure_request_type
-      if request.env['CONTENT_TYPE'] != "application/json"
+      if request.content_type != "application/json"
         raise ActionController::BadRequest
       end
     end
