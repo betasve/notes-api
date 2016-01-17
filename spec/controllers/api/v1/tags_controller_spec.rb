@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::TagsController do
   context "with valid data" do
+    before(:example) do
+      set_content_type
+    end
+
     describe "GET index" do
       it "has status code 200" do
         get :index

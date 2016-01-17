@@ -1,6 +1,5 @@
 module Api::V1
   class NotesController < ApplicationController
-    before_action :ensure_request_type
 
     def index
       notes = Note.all
@@ -32,18 +31,18 @@ module Api::V1
 
       if note.update_attributes(permitted_params)
         note.tags = tags
-        render json: NotesSerializer.new(note).to_json, head: :ok
+        render json: NotesSerializer.new(note).to_json, status: :ok
       else
-        render json: note.errors.to_json, head: :bad_request
+        render json: note.errors.to_json, status: :bad_request
       end
     end
 
     def destroy
       note = Note.find(params[:id])
       if note.destroy
-        render nothing: true, head: :ok
+        render nothing: true, status: :ok
       else
-        render json: note.errors.to_json, head: :bad_request
+        render json: note.errors.to_json, status: :bad_request
       end
     end
 
@@ -55,12 +54,6 @@ module Api::V1
 
     def permitted_tags_params
       params.require(:relationships).require(:tags).require(:data)
-    end
-
-    def ensure_request_type
-      if request.content_type != "application/json"
-        raise ActionController::BadRequest
-      end
     end
   end
 end
