@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
 
+ruby '2.2.2'
 
 gem 'rails', '4.2.5'
 gem 'rails-api'
 gem 'pg'
 gem 'pg_search'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'jbuilder'
 
 group :development, :test do
     gem 'spring'
@@ -27,4 +29,5 @@ group :test do
     gem 'faker',            '~> 1.5.0'
     gem 'shoulda-matchers', '~> 3.0.1'
     gem 'fuubar',           '~> 2.0'
+    gem 'database_cleaner'
 end

@@ -3,16 +3,14 @@ module Api::V1
 
     def index
       if params[:note_id]
-        note = Note.find(params[:note_id])
-        render json: TagsSerializer.new(note.tags).to_json, status: :ok
+        @tags = Note.find(params[:note_id]).tags
       else
-        render json: TagsSerializer.new(Tag.all).to_json, status: :ok
+        @tags = Tag.all
       end
     end
 
     def show
-      tag = Tag.find(params[:id])
-      render json: TagsSerializer.new(tag).to_json, status: :ok
+      @tag = Tag.find(params[:id])
     end
 
   end

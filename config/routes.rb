@@ -5,7 +5,9 @@ Rails.application.routes.draw do
         resources :tags, only: [:index, :show]
       end
 
-      resources :tags, only: [:index, :show]
+      resources :tags, only: [:index, :show] do
+        resources :notes, only: [:index, :show]
+      end
       get 'search', to: "search#index"
     end
   end

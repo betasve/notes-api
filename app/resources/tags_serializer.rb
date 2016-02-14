@@ -21,7 +21,7 @@ class TagsSerializer < BaseSerializer
     {
       notes: {
         links: {
-          related: api_v1_tags_url
+          related: api_v1_tag_notes_url(tag)
         },
         data: self.to_collection(tag.notes)
       }

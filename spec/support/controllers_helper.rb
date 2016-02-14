@@ -3,8 +3,8 @@ module ControllerHelpers
     request.headers['Content-Type'] = 'application/json'
   end
 
-  def json
-    @json ||= JSON.parse(response.body, symbolize_names: true)
+  def jdata
+    @jdata ||= JSON.parse(response.body, symbolize_names: true)
   end
 
   def update_request(note)

@@ -2,15 +2,15 @@ module Api::V1
   class NotesController < ApplicationController
 
     def index
-      notes = Note.all
-
-      render json: NotesSerializer.new(notes).to_json
+      if params[:tag_id]
+        @notes = Tag.find(params[:tag_id]).notes
+      else
+        @notes = Note.all
+      end
     end
 
     def show
-      note = Note.find(params[:id])
-
-      render json: NotesSerializer.new(note).to_json
+      @note = Note.find(params[:id])
     end
 
     def create

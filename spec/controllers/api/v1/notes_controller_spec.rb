@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::NotesController do
+  render_views
+
   context "with valid data" do
     before(:example) do
       set_content_type
@@ -8,23 +10,22 @@ RSpec.describe Api::V1::NotesController do
 
     describe "GET index" do
       it "has a 200 status code" do
-        get :index
+        get :index, format: :json
         expect(response.status).to eq(200)
       end
 
       it "returns a list with notes" do
-        skip("didn't have the time to check why if fails")
         notes = Fabricate.times(3, :note)
-        get :index
-        expect(json).to have_key(:data)
-        expect(json[:data].count).to eq(3)
+        get :index, format: :json
+        expect(jdata).to have_key(:data)
+        expect(jdata[:data].count).to eq(3)
       end
     end
 
     describe "GET show" do
       before(:example) do
         @note = Fabricate(:note)
-        get :show, id: @note
+        get :show, id: @note, format: :json
       end
 
       it_behaves_like "JSON endpoint", 200
@@ -39,7 +40,6 @@ RSpec.describe Api::V1::NotesController do
       it_behaves_like "JSON endpoint", 201
 
       it "creates tags for the note" do
-        skip("didn't have the time to check why if fails")
         expect(Tag.all).to eq(@note.tags)
       end
     end
@@ -56,7 +56,6 @@ RSpec.describe Api::V1::NotesController do
       it_behaves_like "JSON endpoint", 200
 
       it "adds new tag after update" do
-        skip("didn't have the time to check why if fails")
         expect(Tag.all).to eq(@note.tags)
       end
     end

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::TagsController do
+  render_views
+
   context "with valid data" do
     before(:example) do
       set_content_type
@@ -8,33 +10,23 @@ RSpec.describe Api::V1::TagsController do
 
     describe "GET index" do
       it "has status code 200" do
-        get :index
+        get :index, format: :json
         expect(response.status).to eq(200)
       end
 
       it "returns all tags when not nested" do
-        skip("didn't have the time to check why if fails")
         tags = Fabricate.times(3, :tag)
-        get :index
-        expect(json).to have_key(:data)
-        expect(json[:data].count).to eq(3)
-      end
-
-      it "returns only given tags when nested" do
-        skip("didn't have the time to check why if fails")
-        note = Fabricate(:note)
-        tag = Fabricate(:tag)
-        get :index, note_id: note
-        expect(Tag.count).to eq(4)
-        expect(json).to eq(TagsSerializer.new(note.tags).to_json)
+        get :index, format: :json
+        expect(jdata).to have_key(:data)
+        expect(jdata[:data].count).to eq(3)
       end
     end
 
     describe "GET show" do
       it "returns serialized tag" do
         tag = Fabricate(:tag)
-        get :show, id: tag
-        expect(json).to eq(TagsSerializer.new(tag).to_json)
+        get :show, id: tag, format: :json
+        expect(jdata).to eq(TagsSerializer.new(tag).to_json)
       end
     end
   end
