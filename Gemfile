@@ -5,6 +5,7 @@ gem 'rails', '4.2.5'
 gem 'rails-api'
 gem 'pg'
 gem 'pg_search'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :development, :test do
     gem 'spring'
